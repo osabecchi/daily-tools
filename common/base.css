@@ -74,6 +74,12 @@ a {
   padding: calc(env(safe-area-inset-top) + 16px) 16px 12px;
 }
 
+/* ホーム画面から開いた時（theme.js が is-standalone を付ける）：
+   iPhone は時刻の帯の少し下までぼかすので、その範囲からヘッダーを外に出す */
+.is-standalone .app-header {
+  padding-top: calc(env(safe-area-inset-top) + 44px);
+}
+
 .app-title {
   flex: 1;                         /* 残りの幅をすべて使う＝ボタンを右端へ押し出す */
   margin: 0;

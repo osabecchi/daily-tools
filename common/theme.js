@@ -32,6 +32,13 @@
   // すぐにテーマを反映（まだ <body> が無い段階でも <html> は触れる）
   applyTheme(currentTheme);
 
+  // ホーム画面のアイコンから開いたかを調べ、<html> に is-standalone という目印を付ける。
+  // （iPhone は navigator.standalone、それ以外は display-mode で判定できる）
+  // iPhone はこのとき画面の上端をぼかすので、base.css でヘッダーを少し下げている。
+  const isStandalone =
+    window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+  document.documentElement.classList.toggle('is-standalone', isStandalone);
+
   // HTML の読み込みが終わってからボタンを準備する
   document.addEventListener('DOMContentLoaded', () => {
     updateButtons();
