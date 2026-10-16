@@ -2,8 +2,9 @@
 <html lang="ja" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <!-- スマホで表示幅を端末に合わせる（これが無いとPC幅で縮小表示される） -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- スマホで表示幅を端末に合わせる（これが無いとPC幅で縮小表示される）
+       viewport-fit=cover：iPhone の画面いっぱいに描き、ノッチ等の余白は CSS の env() で自分で調整する -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>毎日ツール集</title>
   <link rel="stylesheet" href="common/base.css">
   <!-- テーマは表示前に決めたいので <head> で読み込む -->

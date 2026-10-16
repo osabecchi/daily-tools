@@ -441,7 +441,7 @@ input[type="color"] {
 .toast {
   position: fixed;
   left: 50%;
-  bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom));  /* ホームバーにかぶらないように */
   max-width: calc(100% - 32px);
   margin: 0;
   padding: 10px 18px;

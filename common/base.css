@@ -48,6 +48,15 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-text-size-adjust: 100%;  /* iPhone で横向きにした時に文字が勝手に拡大されるのを防ぐ */
+
+  /*
+   * env(safe-area-inset-○○)：iPhone の「ノッチ・時刻の帯・ホームバー」にかぶらない安全な余白の大きさ。
+   * viewport-fit=cover（各HTMLの <meta name="viewport">）とセットで使う。
+   * PC など余白が無い端末では 0 になるので、見た目は変わらない。
+   */
+  padding-left: env(safe-area-inset-left);    /* 横向きにした時のノッチ側 */
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom); /* 画面下のホームバー */
 }
 
 a {
@@ -61,7 +70,8 @@ a {
   gap: 12px;
   max-width: 720px;
   margin: 0 auto;
-  padding: 12px 16px;
+  /* 上の余白 = 時刻の帯の高さ + 16px（帯のまわりのぼかしに文字が重ならないように） */
+  padding: calc(env(safe-area-inset-top) + 16px) 16px 12px;
 }
 
 .app-title {
