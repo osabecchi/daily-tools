@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <!-- スマホで表示幅を端末に合わせる（これが無いとPC幅で縮小表示される） -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>毎日ツール集</title>
+  <link rel="stylesheet" href="common/base.css">
+  <!-- テーマは表示前に決めたいので <head> で読み込む -->
+  <script src="common/storage.js"></script>
+  <script src="common/theme.js"></script>
+  <style>
+    /* トップページだけで使う見た目なので、ここに直接書いている */
+    .lead {
+      margin: 0 0 20px;
+      color: var(--muted);
+    }
+
+    /* ツールのカードを並べる。画面幅に応じて列数が自動で変わる */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .tool-card {
+      position: relative;
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a.tool-card:hover {
+      border-color: var(--accent);
+    }
+
+    .tool-card .icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .tool-card h2 {
+      margin: 8px 0 4px;
+      font-size: 1.1rem;
+    }
+
+    .tool-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* 準備中のツールは薄く表示してクリックできないことを示す */
+    .tool-card.is-coming {
+      opacity: 0.55;
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">毎日ツール集</h1>
+    <button type="button" class="theme-toggle" data-theme-toggle>テーマ</button>
+  </header>
+
+  <main class="container">
+    <p class="lead">毎日使う小さな道具をまとめました。</p>
+
+    <div class="tool-grid">
+      <!-- ① 完成したツールは <a> でリンクにする -->
+      <a class="card tool-card" href="hiit-timer/index.html">
+        <span class="icon" aria-hidden="true">⏱</span>
+        <h2>HIITタイマー</h2>
+        <p>運動と休憩をくり返すインターバルタイマー</p>
+      </a>
+
+      <a class="card tool-card" href="running-pace/index.html">
+        <span class="icon" aria-hidden="true">🏃</span>
+        <h2>ランニングペース計算機</h2>
+        <p>距離と時間から1kmペース／完走時間を計算</p>
+      </a>
+
+      <a class="card tool-card" href="study-tracker/index.html">
+        <span class="icon" aria-hidden="true">📚</span>
+        <h2>学習時間トラッカー</h2>
+        <p>言語別に記録して週ごとにグラフ表示</p>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

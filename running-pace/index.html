@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ランニングペース計算機 | 毎日ツール集</title>
+  <link rel="stylesheet" href="../common/base.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../common/storage.js"></script>
+  <script src="../common/theme.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <a class="back-link" href="../index.html">← 一覧</a>
+    <h1 class="app-title">ペース計算機</h1>
+    <button type="button" class="theme-toggle" data-theme-toggle>テーマ</button>
+  </header>
+
+  <main class="container">
+    <!-- ===== モード切り替えタブ ===== -->
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab" role="tab" data-mode="pace">ペースを計算</button>
+      <button type="button" class="tab" role="tab" data-mode="finish">完走時間を計算</button>
+    </div>
+
+    <!-- form の中の入力が変わると、まとめて1つのイベントで受け取れる -->
+    <form id="calcForm" class="card" autocomplete="off">
+      <!-- ===== 距離（両モード共通） ===== -->
+      <div class="group">
+        <label class="group-title" for="distanceInput">距離</label>
+        <div class="unit-field">
+          <!-- data-key：この入力が inputs のどの項目かを JavaScript に伝える目印 -->
+          <input type="number" id="distanceInput" data-key="distance" inputmode="decimal" min="0" step="any" placeholder="10">
+          <span>km</span>
+        </div>
+        <div class="presets">
+          <button type="button" class="preset" data-km="5">5km</button>
+          <button type="button" class="preset" data-km="10">10km</button>
+          <button type="button" class="preset" data-km="21.0975">ハーフ</button>
+          <button type="button" class="preset" data-km="42.195">フル</button>
+        </div>
+      </div>
+
+      <!-- ===== ペースを計算：時間を入力 ===== -->
+      <div class="group" id="timeGroup">
+        <span class="group-title">かかった時間</span>
+        <div class="unit-row">
+          <label class="unit-field">
+            <input type="number" data-key="hours" inputmode="numeric" min="0" placeholder="0" aria-label="時間">
+            <span>時間</span>
+          </label>
+          <label class="unit-field">
+            <input type="number" data-key="minutes" inputmode="numeric" min="0" placeholder="0" aria-label="分">
+            <span>分</span>
+          </label>
+          <label class="unit-field">
+            <input type="number" data-key="seconds" inputmode="numeric" min="0" placeholder="0" aria-label="秒">
+            <span>秒</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ===== 完走時間を計算：ペースを入力 ===== -->
+      <div class="group" id="paceGroup">
+        <span class="group-title">1kmあたりのペース</span>
+        <div class="unit-row unit-row-2">
+          <label class="unit-field">
+            <input type="number" data-key="paceMinutes" inputmode="numeric" min="0" placeholder="5" aria-label="ペースの分">
+            <span>分</span>
+          </label>
+          <label class="unit-field">
+            <input type="number" data-key="paceSeconds" inputmode="numeric" min="0" placeholder="30" aria-label="ペースの秒">
+            <span>秒 /km</span>
+          </label>
+        </div>
+      </div>
+    </form>
+
+    <!-- ===== 結果 ===== -->
+    <section class="card result" aria-live="polite">
+      <p class="result-label" id="resultLabel">1kmあたりのペース</p>
+      <p class="result-main">
+        <span id="resultValue">—</span><span class="result-unit" id="resultUnit"></span>
+      </p>
+      <p class="result-sub" id="resultSub">距離と時間を入力してください</p>
+    </section>
+
+    <!-- ===== 通過タイム表 ===== -->
+    <section class="card splits" id="splitsSection" hidden>
+      <h2>通過タイム</h2>
+      <table>
+        <thead>
+          <tr><th scope="col">距離</th><th scope="col">通過タイム</th></tr>
+        </thead>
+        <tbody id="splitsBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

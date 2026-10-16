@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>学習時間トラッカー | 毎日ツール集</title>
+  <link rel="stylesheet" href="../common/base.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="../common/storage.js"></script>
+  <script src="../common/theme.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <a class="back-link" href="../index.html">← 一覧</a>
+    <h1 class="app-title">学習時間トラッカー</h1>
+    <button type="button" class="theme-toggle" data-theme-toggle>テーマ</button>
+  </header>
+
+  <main class="container">
+    <!-- ===================== 記録する ===================== -->
+    <section class="card">
+      <h2>記録する</h2>
+
+      <label class="field">
+        <span>言語</span>
+        <select id="languageSelect"></select>
+      </label>
+
+      <!-- ----- 計測タイマー ----- -->
+      <div class="stopwatch">
+        <p class="stopwatch-status" id="stopwatchStatus">勉強を始めるときに押してください</p>
+        <p class="stopwatch-time" id="stopwatchTime">0:00:00</p>
+        <div class="stopwatch-buttons">
+          <button type="button" class="btn btn-primary" id="stopwatchMain">計測開始</button>
+          <button type="button" class="btn" id="stopwatchFinish">終了して記録</button>
+          <button type="button" class="btn btn-ghost" id="stopwatchDiscard">破棄</button>
+        </div>
+      </div>
+
+      <p class="divider"><span>または手入力</span></p>
+
+      <!-- ----- 手入力フォーム ----- -->
+      <form id="recordForm" autocomplete="off">
+        <div class="form-grid">
+          <label class="field">
+            <span>日付</span>
+            <input type="date" id="dateInput" required>
+          </label>
+          <div class="field">
+            <span>時間</span>
+            <div class="duration">
+              <label class="unit-field">
+                <input type="number" id="hoursInput" inputmode="numeric" min="0" max="24" value="0" aria-label="時間">
+                <span>時間</span>
+              </label>
+              <label class="unit-field">
+                <input type="number" id="minutesInput" inputmode="numeric" min="0" value="0" aria-label="分">
+                <span>分</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 押すたびに時間を足すボタン -->
+        <div class="quick-add">
+          <button type="button" class="chip" data-add="15">+15分</button>
+          <button type="button" class="chip" data-add="30">+30分</button>
+          <button type="button" class="chip" data-add="60">+1時間</button>
+          <button type="button" class="chip" data-add="0">0に戻す</button>
+        </div>
+
+        <label class="field">
+          <span>メモ（任意・計測タイマーにも使われます）</span>
+          <input type="text" id="memoInput" maxlength="100" placeholder="例：配列のメソッドを復習">
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-block" id="addButton">記録する</button>
+      </form>
+    </section>
+
+    <!-- ===================== 週グラフ ===================== -->
+    <section class="card">
+      <div class="week-nav">
+        <button type="button" class="icon-btn" id="prevWeek" aria-label="前の週">◀</button>
+        <div class="week-title">
+          <p id="weekRange">-</p>
+          <button type="button" class="link-btn" id="thisWeek">今週に戻る</button>
+        </div>
+        <button type="button" class="icon-btn" id="nextWeek" aria-label="次の週">▶</button>
+      </div>
+
+      <p class="week-total">合計 <strong id="weekTotal">0分</strong><span id="weekAverage"></span></p>
+
+      <!-- 7日分の棒グラフ（JavaScript で中身を作る） -->
+      <div class="chart" id="chart" role="img" aria-label="日別の学習時間グラフ"></div>
+
+      <h3>言語別</h3>
+      <div id="breakdown"></div>
+    </section>
+
+    <!-- ===================== この週の記録 ===================== -->
+    <section class="card">
+      <h2>この週の記録</h2>
+      <ul class="record-list" id="recordList"></ul>
+    </section>
+
+    <!-- ===================== 言語の管理 ===================== -->
+    <!-- details：クリックで開閉できる部品。普段は閉じておく -->
+    <details class="card">
+      <summary>言語の管理</summary>
+      <ul class="language-list" id="languageList"></ul>
+      <form class="language-add" id="languageAddForm" autocomplete="off">
+        <input type="color" id="newLanguageColor" aria-label="新しい言語の色">
+        <input type="text" id="newLanguageName" maxlength="20" placeholder="言語名（例：TypeScript）" required>
+        <button type="submit" class="btn">追加</button>
+      </form>
+      <p class="hint">記録がある言語は削除できないため「非表示」になります（過去のグラフはそのまま残ります）。</p>
+    </details>
+
+    <!-- ===================== データ ===================== -->
+    <details class="card">
+      <summary>データの書き出し・読み込み</summary>
+      <p class="hint">
+        記録はこの端末のこのブラウザにだけ保存されています。
+        スマホとPCでデータを移すときや、バックアップを取るときに使ってください。
+        読み込みは「合体」なので、今ある記録は消えません。
+      </p>
+      <div class="data-buttons">
+        <button type="button" class="btn" id="exportButton">書き出し（保存）</button>
+        <!-- 本物のファイル選択欄は見た目が端末ごとにバラバラなので隠し、ボタンから呼び出す -->
+        <button type="button" class="btn" id="importButton">読み込み</button>
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+      </div>
+    </details>
+  </main>
+
+  <!-- 「記録しました」などを少しだけ表示するお知らせ -->
+  <p class="toast" id="toast" role="status" aria-live="polite"></p>
+
+  <script src="script.js"></script>
+</body>
+</html>

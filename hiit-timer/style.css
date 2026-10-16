@@ -1,0 +1,185 @@
+/*
+ * style.css — HIITタイマー専用の見た目
+ */
+
+/* ===== フェーズごとの背景色（テーマ別） ===== */
+:root,
+:root[data-theme="dark"] {
+  --work-bg: #7f1d1d;   /* 運動：赤 */
+  --rest-bg: #1e3a5f;   /* 休憩：青 */
+  --prep-bg: #6b4e0e;   /* 準備：黄土 */
+  --done-bg: #14532d;   /* 完了：緑 */
+}
+
+:root[data-theme="light"] {
+  --work-bg: #ffd3d3;
+  --rest-bg: #d3e8ff;
+  --prep-bg: #fff0bd;
+  --done-bg: #d1f4da;
+}
+
+/* body に付いている class に応じて背景色を切り替える */
+body {
+  transition: background-color 0.4s ease;  /* 色がふわっと変わるようにする */
+}
+body.phase-work { background-color: var(--work-bg); }
+body.phase-rest { background-color: var(--rest-bg); }
+body.phase-prep { background-color: var(--prep-bg); }
+body.phase-done { background-color: var(--done-bg); }
+
+/* ===== タイマー表示 ===== */
+.timer {
+  padding: 8px 0 4px;
+  text-align: center;
+}
+
+.phase-label {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.time {
+  margin: 0;
+  /* clamp(最小, 基本, 最大)：画面幅(vw)に合わせて文字サイズを伸び縮みさせる */
+  font-size: clamp(5rem, 30vw, 14rem);
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;  /* 数字の幅をそろえて、カウント中に文字が揺れないようにする */
+}
+
+.set-count {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.next-info {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+/* 一時停止中は数字を薄くして止まっていることを分かりやすくする */
+body.is-paused .time {
+  opacity: 0.45;
+}
+
+/* ===== 進捗バー ===== */
+.progress {
+  height: 8px;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;               /* JavaScript で 0〜100% に書き換える */
+  height: 100%;
+  background: var(--text);
+  opacity: 0.8;
+}
+
+/* ===== 操作ボタン ===== */
+.controls {
+  display: grid;
+  grid-template-columns: 2fr 1fr;   /* 開始ボタンを大きく、リセットを小さく */
+  gap: 12px;
+  max-width: 480px;
+  margin: 20px auto 0;
+}
+
+.controls .btn {
+  min-height: 60px;
+  font-size: 1.25rem;
+}
+
+.wake-status {
+  min-height: 1.5em;       /* 文字が無い時も高さを確保して、レイアウトがガタつかないようにする */
+  margin: 8px 0 16px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ===== 設定エリア ===== */
+.settings h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.settings fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* 無効化中（タイマー実行中）は薄く表示 */
+.settings fieldset:disabled {
+  opacity: 0.5;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);   /* スマホ：2列 */
+  gap: 12px;
+}
+
+/* 画面幅が 600px 以上なら 4列に並べる */
+@media (min-width: 600px) {
+  .field-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.25rem;      /* 16px 以上にすると iPhone で入力時に勝手にズームされない */
+  font-weight: 700;
+}
+
+.toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 16px;
+}
+
+.toggles label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.toggles input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+}
+
+.total {
+  margin: 16px 0 0;
+}
+
+.hint {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}

@@ -1,0 +1,177 @@
+/*
+ * style.css — ランニングペース計算機 専用の見た目
+ */
+
+/* ===== タブ（ペース計算／完走時間計算） ===== */
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 2つのタブを同じ幅で並べる */
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.tab {
+  min-height: 44px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 選ばれているタブ（aria-selected="true"）だけ色を付ける */
+.tab[aria-selected="true"] {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* ===== 入力エリア ===== */
+.group + .group {
+  margin-top: 20px;                 /* グループ同士の間をあける */
+}
+
+.group-title {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* 入力欄と単位（km・分・秒）を横に並べる */
+.unit-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unit-field span {
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.unit-field input {
+  width: 100%;
+  min-width: 0;                     /* flex の中で入力欄が縮めるようにする */
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.25rem;               /* 16px 以上で iPhone の自動ズームを防ぐ */
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 時・分・秒を3列に並べる */
+.unit-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* ペース入力は 分・秒 の2列 */
+.unit-row-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* ===== 距離のワンタップボタン ===== */
+.presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.preset {
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* 今の距離と同じボタンは強調する */
+.preset.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ===== 結果 ===== */
+.result {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.result-label {
+  margin: 0;
+  color: var(--muted);
+}
+
+.result-main {
+  margin: 4px 0;
+  font-size: clamp(3rem, 16vw, 5rem);  /* 画面幅に合わせて大きく */
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-unit {
+  margin-left: 4px;
+  font-size: 0.35em;                /* 本体の数字に対して小さめ */
+  color: var(--muted);
+}
+
+.result-sub {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ===== 通過タイム表 ===== */
+.splits {
+  margin-top: 12px;
+}
+
+.splits h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.splits table {
+  width: 100%;
+  border-collapse: collapse;        /* セルの線を1本にまとめる */
+  font-variant-numeric: tabular-nums;
+}
+
+.splits th,
+.splits td {
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+/* 通過タイムの列は右寄せにして桁をそろえる */
+.splits th:last-child,
+.splits td:last-child {
+  text-align: right;
+}
+
+.splits th {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.splits .is-goal td {
+  font-weight: 700;
+}
