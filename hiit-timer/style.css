@@ -40,6 +40,22 @@ body.phase-done { background-color: var(--done-bg); }
   letter-spacing: 0.1em;
 }
 
+/* 種目名：運動中は大きく、休憩・準備中（次の種目）は少し控えめに */
+.exercise-name {
+  min-height: 1.8em;       /* 種目が無い時も高さを確保して、数字の位置が動かないようにする */
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.8;
+  overflow-wrap: anywhere; /* 長い名前でも画面からはみ出さない */
+}
+
+.exercise-name.is-next {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
 .time {
   margin: 0;
   /* clamp(最小, 基本, 最大)：画面幅(vw)に合わせて文字サイズを伸び縮みさせる */
@@ -102,6 +118,97 @@ body.is-paused .time {
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
+  white-space: pre-line;   /* メッセージが2つあるとき、改行で分けて表示する */
+}
+
+/* ===== 種目エリア ===== */
+.exercises {
+  margin-bottom: 16px;
+}
+
+.exercises h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.exercises fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+}
+
+.exercises fieldset:disabled {
+  opacity: 0.5;
+}
+
+.exercise-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;        /* 番号は自分で表示する（ボタンと並べたいため） */
+}
+
+/* 1行 = 番号 | 種目名 | ↑ | ↓ | 削除 */
+.exercise-item {
+  display: grid;
+  grid-template-columns: 1.5em minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.exercise-add {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.exercise-add .btn {
+  min-height: 44px;
+  padding: 8px 18px;
+}
+
+.exercise-no {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.exercise-item input[type="text"],
+.exercise-add input[type="text"] {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;         /* 16px 以上で iPhone の自動ズームを防ぐ */
+}
+
+.small-btn {
+  min-width: 40px;
+  min-height: 40px;        /* 指でタップしやすい大きさ */
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.small-btn:disabled {
+  opacity: 0.3;            /* 先頭の「↑」・末尾の「↓」は押せないことを示す */
+  cursor: default;
+}
+
+.exercise-empty {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 /* ===== 設定エリア ===== */

@@ -23,6 +23,8 @@
     <section class="timer">
       <!-- aria-live：読み上げソフトにフェーズの切り替わりを伝える -->
       <p class="phase-label" id="phaseLabel" aria-live="polite">スタンバイ</p>
+      <!-- 今の種目名（休憩・準備中は「次の種目」）。種目が未登録なら空のまま -->
+      <p class="exercise-name" id="exerciseName" aria-live="polite"></p>
       <p class="time" id="time">20</p>
       <p class="set-count" id="setCount">全 8 セット</p>
       <div class="progress" aria-hidden="true">
@@ -37,6 +39,22 @@
       <button type="button" class="btn" id="resetButton">リセット</button>
     </div>
     <p class="wake-status" id="wakeStatus"></p>
+
+    <!-- ===== 種目 ===== -->
+    <section class="card exercises">
+      <h2>種目</h2>
+      <!-- タイマー中は fieldset ごと操作できなくする（設定と同じ仕組み） -->
+      <fieldset id="exerciseFieldset">
+        <ol class="exercise-list" id="exerciseList"></ol>
+
+        <form class="exercise-add" id="exerciseAddForm" autocomplete="off">
+          <input type="text" id="exerciseNameInput" maxlength="20" placeholder="種目名（例：バーピー）" aria-label="追加する種目名" required>
+          <button type="submit" class="btn" id="exerciseAddButton">追加</button>
+        </form>
+
+        <p class="hint" id="exerciseHint"></p>
+      </fieldset>
+    </section>
 
     <!-- ===== 設定 ===== -->
     <section class="card settings">
@@ -69,6 +87,8 @@
 
         <p class="total">合計時間：<strong id="totalTime">-</strong></p>
         <p class="hint">準備を 0 にすると、すぐ運動から始まります。PCではスペースキーで開始／一時停止できます。</p>
+        <!-- 音声ファイルの作成には上限があるので、超えるときだけ知らせる（JavaScript で表示を切り替え） -->
+        <p class="hint" id="soundNote" hidden>合計が60分を超えるため、画面ロック中は音が鳴りません（画面を開いている間は鳴ります）。</p>
       </fieldset>
     </section>
   </main>
